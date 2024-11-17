@@ -1,22 +1,66 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Operations {
-    public void printM(int[][] a, String name) {
-        System.out.println("Matrix " + name + ":");
-        for (int[] integers : a) {
-            for (int j = 0; j < a[0].length; j++) {
+public class Matrix extends MathOperations {
+    public int[][] elements;
+    public int row, col;
+    private static int matrixCount = 0;
+
+    public Matrix(int row, int col, String name) {
+        super(name, row * col);
+        this.row = row;
+        this.col = col;
+        elements = new int[row][col];
+        createElements();
+    }
+
+    public void createElements() {
+        Random random = new Random();
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                elements[i][j] = random.nextInt(10); // Generates random integers between 0 and 10
+            }
+        }
+
+        // Print the matrix
+        print();
+    }
+
+    @Override
+    public Matrix add(MathOperations other) {
+        Matrix a = (Matrix) other;
+        Matrix res = new Matrix(row, col, "Matrix");
+        if (row != a.row || col != a.col) {
+            return null;
+        }
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
+                res.elements[i][j] = elements[i][j] + a.elements[i][j];
+            }
+        }
+        return res;
+    }
+    @Override
+    public void print() {
+        System.out.println(super.getName());
+        for (int[] integers : elements) {
+            for (int j = 0; j < elements[0].length; j++) {
                 System.out.print(integers[j] + " ");
             }
             System.out.println();
         }
     }
-
+/*
     public void printBoolM(boolean[][] a, String name) {
         System.out.println("Boolean Matrix " + name + ":");
         for (boolean[] booleans : a) {
             for (int j = 0; j < a[0].length; j++) {
-                System.out.print(booleans[j] + " ");
+                if (booleans[j]) {
+                    System.out.print(1 + " ");
+                } else {
+                    System.out.print(0 + " ");
+                }
             }
             System.out.println();
         }
@@ -59,22 +103,9 @@ public class Operations {
             }
         }
         return res;
-    }
+    }*/
 
-    public int[][] matrixSum(int[][] a, int[][] b) {
-        int[][] res = new int[a.length][a[0].length];
-        if (a.length != b.length || a[0].length != b[0].length) {
-            return null;
-        }
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < a[0].length; j++) {
-                res[i][j] = a[i][j] + b[i][j];
-            }
-        }
-        return res;
-    }
-
-    public int[][] matrixMult(int[][] a, int[][] b) {
+    /*public int[][] matrixMult(int[][] a, int[][] b) {
         int[][] res = new int[a.length][b[0].length];
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < b[0].length; j++) {
@@ -107,21 +138,6 @@ public class Operations {
         return sc.nextInt();
     }
 
-    public int[][] randomMatrix(int row, int col, String name) {
-        int[][] matrix = new int[row][col];
-        Random random = new Random();
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                matrix[i][j] = random.nextInt(10); // Generates random integers between 0 and 10
-            }
-        }
-
-        // Print the matrice
-        printM(matrix, name);
-        return matrix;
-    }
-
     public boolean[][] randomBoolMat(int row, int col, String name) {
         boolean[][] matrix = new boolean[row][col];
         Random random = new Random();
@@ -135,5 +151,5 @@ public class Operations {
         // Print the matrix
         printBoolM(matrix, name);
         return matrix;
-    }
+    }*/
 }
