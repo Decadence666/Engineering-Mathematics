@@ -4,14 +4,13 @@ import java.util.Scanner;
 public class Matrix extends MathOperations {
     public int[][] elements;
     public int row, col;
-    private static int matrixCount = 0;
+    private static int matrixCount = 1;
 
     public Matrix(int row, int col, String name) {
         super(name, row * col);
         this.row = row;
         this.col = col;
         elements = new int[row][col];
-        createElements();
     }
 
     public void createElements() {
@@ -30,7 +29,7 @@ public class Matrix extends MathOperations {
     @Override
     public Matrix add(MathOperations other) {
         Matrix a = (Matrix) other;
-        Matrix res = new Matrix(row, col, "Matrix");
+        Matrix res = new Matrix(row, col, this.getName() + " + " + a.getName());
         if (row != a.row || col != a.col) {
             return null;
         }
@@ -41,6 +40,25 @@ public class Matrix extends MathOperations {
         }
         return res;
     }
+    @Override
+    public Matrix multiply(MathOperations other) {
+        Matrix a = (Matrix) other;
+        if(this.col != a.row){
+            throw new IllegalArgumentException("Matrix dimensions are incompatible for multiplication");
+        }
+        Matrix res = new Matrix(this.row, a.col, this.getName() + " * " + a.getName());
+        for (int i = 0; i < this.row; i++) {
+            for (int j = 0; j < a.col; j++) {
+                res.elements[i][j] = 0;
+                for (int k = 0; k < this.col; k++) {
+                    res.elements[i][j] += this.elements[i][k] * a.elements[k][j];
+                }
+            }
+        }
+        res.print();
+        return res;
+    }
+
     @Override
     public void print() {
         System.out.println(super.getName());
@@ -104,19 +122,7 @@ public class Matrix extends MathOperations {
         }
         return res;
     }*/
-
-    /*public int[][] matrixMult(int[][] a, int[][] b) {
-        int[][] res = new int[a.length][b[0].length];
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < b[0].length; j++) {
-                for (int k = 0; k < a[0].length; k++) {
-                    res[i][j] += a[i][k] * b[k][j];
-                }
-            }
-        }
-        return res;
-    }
-
+/*
     //transpose of a regular matrix:
     public int[][] matrixT(int[][] a) {
         int[][] res = new int[a[0].length][a.length];
