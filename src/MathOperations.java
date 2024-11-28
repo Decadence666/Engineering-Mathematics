@@ -14,6 +14,7 @@ public abstract class MathOperations {
     public abstract void print();
     public abstract MathOperations add(MathOperations a);
     public abstract MathOperations multiply(MathOperations a);
+    public abstract MathOperations AND(MathOperations a);
     /*abstract int subtract(int a, int b);
     abstract int divide(int a, int b);
     abstract int mod(int a, int b);
