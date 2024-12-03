@@ -9,27 +9,15 @@ public class Matrix extends MathOperations {
         this.row = row;
         this.col = col;
         elements = new int[row][col];
+        createMatrix();
     }
 
-    public void createDense() {
+    public void createMatrix() {
         Random random = new Random();
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 elements[i][j] = random.nextInt(10); // Generates random integers between 0 and 10
-            }
-        }
-
-        // Print the matrix
-        print();
-    }
-
-    public void createBoolean() {
-        Random random = new Random();
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                elements[i][j] = boolToByte(random.nextBoolean()); // Generates random booleans
             }
         }
 
@@ -83,84 +71,17 @@ public class Matrix extends MathOperations {
         }
     }
 
-    @Override
-    public Matrix AND(MathOperations other) {
-        Matrix a = (Matrix) other;
-        Matrix res = new Matrix(this.row, this.col, "(" + this.getName() + " v " + a.getName() + ")");
-        if (this.row != a.row || this.col != a.col) {
-            throw new IllegalArgumentException("Matrix dimensions are incompatible for AND");
-        }
+    //transpose of a regular matrix:
+    public Matrix matrixT() {
+        Matrix res = new Matrix(this.col, this.row, this.getName() + "^T");
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
-                res.elements[i][j] = (this.elements[i][j] + a.elements[i][j])/2;
-            }
-        }
-        res.print();
-        return res;
-    }
-/*
-    public boolean[][] matrixOR(boolean[][] a, boolean[][] b) {
-        boolean[][] res = new boolean[a.length][a[0].length];
-        if (a.length != b.length || a[0].length != b[0].length) {
-            return null;
-        }
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < a[0].length; j++) {
-                res[i][j] = a[i][j] || b[i][j];
+                res.elements[j][i] = elements[i][j];
             }
         }
         return res;
     }
 
-    public boolean[][] matrixBoolMult(boolean[][] a, boolean[][] b) {
-        boolean[][] res = new boolean[a.length][b[0].length];
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < b[0].length; j++) {
-                res[i][j] = false;
-                for (int k = 0; k < a[0].length; k++) {
-                    res[i][j] |= (a[i][k] && b[k][j]);
-                }
-            }
-        }
-        return res;
-    }*/
-
-    /*
-        //transpose of a regular matrix:
-        public int[][] matrixT(int[][] a) {
-            int[][] res = new int[a[0].length][a.length];
-            for (int i = 0; i < a.length; i++) {
-                for (int j = 0; j < a[0].length; j++) {
-                    res[j][i] = a[i][j];
-                }
-            }
-            return res;
-        }
-
-        public int userRow(Scanner sc) {
-            System.out.println("Enter how many rows you want:");
-            return sc.nextInt();
-        }
-
-        public int userCol(Scanner sc) {
-            System.out.println("Enter how many rows you want:");
-            return sc.nextInt();
-        }
-
-        public boolean[][] randomBoolMat(int row, int col, String name) {
-            boolean[][] matrix = new boolean[row][col];
-            Random random = new Random();
-
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col; j++) {
-                    matrix[i][j] = random.nextBoolean(); // Generates random bool
-                }
-            }
-
-            // Print the matrix
-            printBoolM(matrix, name);
-            return matrix;
-        }*/
     private byte boolToByte(boolean bool) {
         return (byte) (bool ? 1 : 0);
     }
