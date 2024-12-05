@@ -1,100 +1,107 @@
 import java.util.Random;
 
-public class BoolMatrix extends MathOperations {
-    public boolean[][] elements;
-    public int row, col;
+public class BoolMatrix extends Matrix {
+    private boolean[][] elements;
 
-    public BoolMatrix(int row, int col, String name) {
-        super(name, row * col);
-        this.row = row;
-        this.col = col;
-        elements = new boolean[row][col];
+    public BoolMatrix(boolean[][] elements, String name) {
+        super(elements.length, elements[0].length, name);
+        this.elements = elements;
     }
 
-    public void createMatrix() {
+    public boolean[][] getElements() {
+        return elements;
+    }
+
+    public static BoolMatrix randomMatrix(String name, int row, int col) {
         Random random = new Random();
+        boolean[][] randomElements = new boolean[row][col];
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                elements[i][j] = random.nextBoolean(); // Generates random booleans
+                randomElements[i][j] = random.nextBoolean(); // Generates random booleans
             }
         }
-
-        // Print the matrix
-        print();
-    }
-
-    public BoolMatrix add(MathOperations other) {
-        BoolMatrix a = (BoolMatrix) other;
-        return OR(a);
+        return new BoolMatrix(randomElements, name);
     }
 
     //OR
-    public BoolMatrix OR(BoolMatrix a) {
-        if (this.row != a.row || this.col != a.col) {
-            throw new IllegalArgumentException("Matrix dimensions are incompatible for OR");
+    @Override
+    public BoolMatrix add(MathOperations other) {
+        if(!(other instanceof BoolMatrix)){
+            throw new IllegalArgumentException("Expected a boolean matrix instance.");
         }
-        BoolMatrix res = new BoolMatrix(this.row, this.col, "(" + this.getName() + " v " + a.getName() + ")");
+        BoolMatrix a = (BoolMatrix) other;
+        checkDimensionsForAdd(a);
+        boolean[][] res = new boolean[row][col];
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
-                res.elements[i][j] = this.elements[i][j] || a.elements[i][j];
+                res[i][j] = this.elements[i][j] || a.elements[i][j];
             }
         }
-        res.print();
-        return res;
+        return new BoolMatrix(res, "(" + this.name + " v " + a.name + ")");
     }
 
-    public BoolMatrix AND(BoolMatrix a) {
-        if (this.row != a.row || this.col != a.col) {
-            throw new IllegalArgumentException("Matrix dimensions are incompatible for AND");
+    @Override
+    public BoolMatrix multiply(MathOperations other) {
+        if(!(other instanceof BoolMatrix)){
+            throw new IllegalArgumentException("Expected a boolean matrix instance.");
         }
-        BoolMatrix res = new BoolMatrix(this.row, this.col, "(" + this.getName() + " ∧ " + a.getName() + ")");
+        BoolMatrix a = (BoolMatrix) other;
+        checkDimensionsForAdd(a);
+        boolean[][] res = new boolean[row][col];
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
-                res.elements[i][j] = this.elements[i][j] && a.elements[i][j];
+                res[i][j] = this.elements[i][j] && a.elements[i][j];
             }
         }
-        res.print();
-        return res;
+        return new BoolMatrix(res, "(" + this.name + " ∧ " + a.name + ")");
     }
 
     //Boolean Multiplication
-    @Override
-    public BoolMatrix multiply(MathOperations other) {
-        BoolMatrix a = (BoolMatrix) other;
-        if (this.col != a.row) {
-            throw new IllegalArgumentException("Matrix dimensions are incompatible for multiplication");
+    public BoolMatrix boolMultiply(MathOperations other) {
+        if(!(other instanceof BoolMatrix)){
+            throw new IllegalArgumentException("Expected a boolean matrix instance.");
         }
-        BoolMatrix res = new BoolMatrix(this.row, a.col, "(" + this.getName() + " symbol " + a.getName() + ")");
+        BoolMatrix a = (BoolMatrix) other;
+        checkDimensionsForMultiply(a);
+        boolean[][] res = new boolean[this.row][a.col];
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < a.col; j++) {
-                res.elements[i][j] = false;
+                res[i][j] = false;
                 for (int k = 0; k < this.col; k++) {
-                    res.elements[i][j] |= (this.elements[i][k] && a.elements[k][j]);
+                    res[i][j] |= (this.elements[i][k] && a.elements[k][j]);
                 }
             }
         }
-        res.print();
-        return res;
+        return new BoolMatrix(res, "(" + this.name + " Ꙩ " + a.name + ")");
+    }
+
+    public BoolMatrix NOT() {
+        boolean[][] res = new boolean[this.row][this.col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                res[i][j] = !this.elements[i][j];
+            }
+        }
+        return new BoolMatrix(res, "¬" + this.name);
     }
 
     public BoolMatrix matrixT() {
-        BoolMatrix res = new BoolMatrix(this.col, this.row, this.getName() + "^T");
+        boolean[][] res = new boolean[this.col][this.row];
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
-                res.elements[j][i] = elements[i][j];
+                res[j][i] = elements[i][j];
             }
         }
-        res.print();
-        return res;
+        return new BoolMatrix(res, name + "^T");
     }
 
     @Override
     public void print() {
-        System.out.println(super.getName() + ":");
-        for (boolean[] integers : elements) {
-            for (int j = 0; j < elements[0].length; j++) {
-                System.out.print(boolToByte(integers[j]) + " ");
+        System.out.println(this.name + ":");
+        for(boolean[] row : elements){
+            for(boolean value : row){
+                System.out.print(boolToByte(value) + " ");
             }
             System.out.println();
         }
