@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class BoolMatrix extends Matrix {
-    private boolean[][] elements;
+    private final boolean[][] elements;
 
     public BoolMatrix(boolean[][] elements, String name) {
         super(elements.length, elements[0].length, name);

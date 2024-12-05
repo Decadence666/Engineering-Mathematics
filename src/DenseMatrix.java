@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class DenseMatrix extends Matrix {
-    private double[][] elements;
+    private final double[][] elements;
 
     public DenseMatrix(double[][] elements, String name) {
         super(elements.length, elements[0].length, name);
