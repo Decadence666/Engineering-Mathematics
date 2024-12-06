@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public class SquareMatrix extends DenseMatrix {
@@ -9,7 +10,7 @@ public class SquareMatrix extends DenseMatrix {
         }
     }
 
-    public static SquareMatrix randomMatrix(String name, int dimension, double min, double max){
+    public static SquareMatrix randomMatrix(String name, int dimension, double min, double max) {
         Random random = new Random();
         double[][] randomElements = new double[dimension][dimension];
 
@@ -19,5 +20,30 @@ public class SquareMatrix extends DenseMatrix {
             }
         }
         return new SquareMatrix(randomElements, name);
+    }
+
+    //not working right now, need cofactor and minor method first
+    public SquareMatrix inverse() {
+        if(determinant() == 0) {
+            throw new ArithmeticException("Matrix is singular and cannot be inverted.");
+        }
+        double[][] res = new double[this.row][this.row];
+        return new SquareMatrix(res, name);
+    }
+
+    @Override
+    public double determinant() {
+        int sgn = 1;
+        double res = 0;
+        List<int[]> permutations = BasicOperations.generatePermutations(this.row);
+        for (int[] permutation : permutations) {
+            double temp = 1;
+            for (int j = 0; j < this.row; j++) {
+                temp *= elements[j][permutation[j]];
+            }
+            res += sgn * temp;
+            sgn *= -1;
+        }
+        return res;
     }
 }

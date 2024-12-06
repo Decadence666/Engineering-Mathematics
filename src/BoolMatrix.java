@@ -8,10 +8,6 @@ public class BoolMatrix extends Matrix {
         this.elements = elements;
     }
 
-    public boolean[][] getElements() {
-        return elements;
-    }
-
     public static BoolMatrix randomMatrix(String name, int row, int col) {
         Random random = new Random();
         boolean[][] randomElements = new boolean[row][col];
@@ -105,6 +101,12 @@ public class BoolMatrix extends Matrix {
             }
             System.out.println();
         }
+    }
+
+    //no determinant for boolean matrices
+    @Override
+    public double determinant() {
+        return 0;
     }
 
     private byte boolToByte(boolean bool) {

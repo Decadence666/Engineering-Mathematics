@@ -8,17 +8,23 @@ abstract class Matrix implements MathOperations {
         this.name = name;
     }
 
+    public double[][] getElements() {
+        return elements;
+    }
+
     @Override
     public void print() {
         System.out.println(this.name + ":");
-        double[][] data = this.elements;
+        double[][] data = getElements();
         for(double[] row : data){
             for(double value : row){
-                System.out.println(value + " ");
+                System.out.print(value + " ");
             }
             System.out.println();
         }
     }
+
+    public abstract double determinant();
 
     protected void checkDimensionsForAdd(Matrix other) {
         if (this.row != other.row || this.col != other.col) {

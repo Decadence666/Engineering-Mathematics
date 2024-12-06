@@ -1,13 +1,14 @@
 import java.util.Random;
 
 public class DenseMatrix extends Matrix {
-    private final double[][] elements;
+    protected final double[][] elements;
 
     public DenseMatrix(double[][] elements, String name) {
         super(elements.length, elements[0].length, name);
         this.elements = elements;
     }
 
+    @Override
     public double[][] getElements() {
         return elements;
     }
@@ -68,5 +69,10 @@ public class DenseMatrix extends Matrix {
             }
         }
         return new DenseMatrix(res, super.name + "^T");
+    }
+
+    @Override
+    public double determinant() {
+        return 0;
     }
 }
