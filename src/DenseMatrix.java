@@ -61,7 +61,7 @@ public class DenseMatrix extends Matrix {
     }
 
     //transpose of a regular matrix:
-    public DenseMatrix matrixT() {
+    public DenseMatrix transpose() {
         double[][] res = new double[row][col];
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {

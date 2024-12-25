@@ -28,4 +28,21 @@ public class BasicOperations {
             }
         }
     }
+
+    public static int power(int a, int n){
+        int res = 1;
+        while(n>0){
+            res *= a;
+            n--;
+        }
+        return res;
+    }
+    public static double power(double a, double n){
+        double res = 1;
+        while(n>0){
+            res *= a;
+            n--;
+        }
+        return res;
+    }
 }
